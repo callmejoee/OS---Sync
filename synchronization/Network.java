@@ -8,46 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-/**
- *
- * @author Seif
- */
-// public class Network {
-// /**
-// * @param args the command line arguments
-// */
-// public static void main(String[] args) throws InterruptedException {
-// Scanner scanner = new Scanner(System.in);
-// int maxConnections, numDevices;
-// Router router;
-
-// System.out.println("Enter Maximum number of Connections a router can accept:
-// ");
-// maxConnections = scanner.nextInt();
-
-// System.out.println("Enter number of devices that wish to connect: ");
-// numDevices = scanner.nextInt();
-
-// router = new Router(maxConnections);
-
-// for (int i = 0; i < numDevices; i++) {
-// System.out.println("Enter details for Device " + (i + 1) + ":");
-// System.out.println("Name: ");
-// String name = scanner.next();
-
-// System.out.println("Type: ");
-// String type = scanner.next();
-
-// Device device = new Device(name, type, router);
-// // telling the Thread object which Runnable instance to execute.
-// Thread thread = new Thread(device);
-// thread.start();
-// }
-// scanner.close();
-// }
-// }
-
-// !test Network Class
 public class Network {
     /**
      * @param args the command line arguments
@@ -57,28 +17,35 @@ public class Network {
         int maxConnections, numDevices;
         Router router;
 
-        // System.out.println("Enter Maximum number of Connections a router can accept:
-        // ");
-        maxConnections = 5;
+        System.out.print("Enter maximum number of connections a router can accept: ");
+        maxConnections = scanner.nextInt();
 
-        // System.out.println("Enter number of devices that wish to connect: ");
-        numDevices = 10;
-
+        System.out.print("Enter number of devices that wish to connect: ");
+        numDevices = scanner.nextInt();
+        scanner.nextLine();
         router = new Router(maxConnections);
 
+        List<Device> allDevices = new ArrayList<>();
         for (int i = 0; i < numDevices; i++) {
-            // System.out.println("Enter details for Device " + (i + 1) + ":");
-            // System.out.println("Name: ");
-            String name = "Device-" + i;
+            System.out.println("Enter details for Device " + (i + 1));
+            // System.out.print("Name: ");
+            // String name = scanner.nextLine();
+            String name = "C" + (i + 1);
+            System.out.print("Type: ");
+            String type = scanner.nextLine();
 
-            // System.out.println("Type: ");
-            String type = "Mobile";
+            // Adds a device instance to the total devices list
+            allDevices.add(new Device(name, type, router));
+        }
 
-            Device device = new Device(name, type, router);
-
+        for (Device device : allDevices) {
             // telling the Thread object which Runnable instance to execute.
             Thread thread = new Thread(device);
             thread.start();
+
+            System.out.println(device + " Arrived");
+            // forces a 1s gap between each connection to simulate users connecting
+            Thread.sleep(1000);
         }
         scanner.close();
     }
@@ -141,13 +108,16 @@ class Device implements Runnable {
     // ++++++++++++++++++++
     // define each of the run functions
     private void connect() {
+        System.out.println(name + " Waiting");
         router.occupyConnection(this);
-        System.out.println(name + " " + type + " Connected");
+        System.out.println(name + " Connected");
     }
 
     // ++++++++++++++++++++++
     private void performActivity() {
-        System.out.println("Connection " + index + ": " + name + " performs online activity");
+        int connectionIndex = router.getConnectedDevices().indexOf(this) + 1;
+        System.out.println(
+                "Connection " + connectionIndex + ": " + name + " performs online activity");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
@@ -157,10 +127,16 @@ class Device implements Runnable {
 
     // +++++++++++++++++++++++
     private void logout() {
+        int connectionIndex = router.getConnectedDevices().indexOf(this) + 1;
         router.releaseConnection(this);
-        System.out.println("Connection " + index + ": " + name + " Disconnected");
+        System.out.println("Connection " + connectionIndex + ": " + name + " Disconnected");
     }
     // +++++++++++++++++++++++
+
+    @Override
+    public String toString() {
+        return "(" + name + ") (" + type + ")";
+    }
 }
 
 // _____________________________________________________________________________________________________________
