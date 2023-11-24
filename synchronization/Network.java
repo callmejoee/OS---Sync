@@ -16,8 +16,31 @@ import java.util.Scanner;
          * @param args the command line arguments
          */
         public static void main(String[] args) throws InterruptedException {
-            //TODO 
-            
+            Scanner scanner = new Scanner(System.in);
+            int maxConnections, numDevices;
+            Router router;
+
+            System.out.println("Enter Maximum number of Connections a router can accept: ");
+            maxConnections = scanner.nextInt();
+
+            System.out.println("Enter number of devices that wish to connect: ");
+            numDevices = scanner.nextInt();
+
+            router = new Router(maxConnections);
+
+            for (int i = 0; i < numDevices; i++)
+            {
+                System.out.println("Enter details for Device " + (i + 1) + ":");
+                System.out.println("Name: ");
+                String name = scanner.next();
+
+                System.out.println("Type: ");
+                String type = scanner.next();
+
+                Device device = new Device(name, type, router);
+                //telling the Thread object which Runnable instance to execute.
+                Thread thread = new Thread(device);
+            }
         }
     }
     //_____________________________________________________________________________________________________________
