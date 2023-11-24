@@ -115,6 +115,7 @@ class Device implements Runnable {
 
     // ++++++++++++++++++++++
     private void performActivity() {
+        // gets the connection index from the router
         int connectionIndex = router.getConnectedDevices().indexOf(this) + 1;
         System.out.println(
                 "Connection " + connectionIndex + ": " + name + " performs online activity");
@@ -127,6 +128,7 @@ class Device implements Runnable {
 
     // +++++++++++++++++++++++
     private void logout() {
+        // gets the connection index from the router
         int connectionIndex = router.getConnectedDevices().indexOf(this) + 1;
         router.releaseConnection(this);
         System.out.println("Connection " + connectionIndex + ": " + name + " Disconnected");
