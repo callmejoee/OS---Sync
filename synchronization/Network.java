@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/*Authors: Seifeldeen Mohamed Ahmed(20210168)
+ *         Yousef Emad (20210479)
+ *         Yousef Karam (20210480)
+ *         Sherif Fekry (20190261)
+*/
+
 public class Network {
     /**
      * @param args the command line arguments
@@ -33,6 +39,7 @@ public class Network {
         }
     }
 }
+
 // _____________________________________________________________________________________________________________
 class Device implements Runnable {
     private String name;
@@ -112,8 +119,8 @@ class Device implements Runnable {
     private void logout() {
         // gets the connection index from the router
         int connectionIndex = router.getConnectedDevices().indexOf(this) + 1;
-        router.releaseConnection(this);
         System.out.println("Connection " + connectionIndex + ": " + name + " Disconnected");
+        router.releaseConnection(this);
     }
     // +++++++++++++++++++++++
 
