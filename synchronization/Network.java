@@ -13,44 +13,26 @@ public class Network {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
-        int maxConnections, numDevices;
-        Router router;
-
-        System.out.print("Enter maximum number of connections a router can accept: ");
-        maxConnections = scanner.nextInt();
-
-        System.out.print("Enter number of devices that wish to connect: ");
-        numDevices = scanner.nextInt();
-        scanner.nextLine();
-        router = new Router(maxConnections);
-
-        List<Device> allDevices = new ArrayList<>();
-        for (int i = 0; i < numDevices; i++) {
-            System.out.println("Enter details for Device " + (i + 1));
-            // System.out.print("Name: ");
-            // String name = scanner.nextLine();
-            String name = "C" + (i + 1);
-            System.out.print("Type: ");
-            String type = scanner.nextLine();
-
-            // Adds a device instance to the total devices list
-            allDevices.add(new Device(name, type, router));
+        System.out.println("What is the number of WI-FI Connections?");
+        int maxConnections = new Scanner(System.in).nextInt();
+        System.out.println("What is the number of devices Clients want to connect?");
+        int numOfDevices = new Scanner(System.in).nextInt();
+        ArrayList<Device> devices = new ArrayList<>();
+        Router router = new Router(maxConnections);
+        for (int i = 0; i < numOfDevices; i++) {
+            String deviceNT = new Scanner(System.in).nextLine();
+            String deviceName = deviceNT.split(" ")[0];
+            String deviceType = deviceNT.split(" ")[1];
+            devices.add(new Device(deviceName, deviceType, router));
         }
-
-        for (Device device : allDevices) {
-            // telling the Thread object which Runnable instance to execute.
+        for (Device device : devices) {
+            System.out.println(device.getName() + " " + device.getType() + " arrived");
             Thread thread = new Thread(device);
             thread.start();
-
-            System.out.println(device + " Arrived");
-            // forces a 1s gap between each connection to simulate users connecting
             Thread.sleep(1000);
         }
-        scanner.close();
     }
 }
-
 // _____________________________________________________________________________________________________________
 class Device implements Runnable {
     private String name;
